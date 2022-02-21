@@ -1,0 +1,14 @@
+# Visual Studio 
+.vs
+bin
+obj
+serviceDependencies.*
+
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+*.zip
+
+.config
