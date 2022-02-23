@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using shopping_cart.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace shopping_cart.Data

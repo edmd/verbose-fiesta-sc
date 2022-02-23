@@ -1,5 +1,5 @@
 ﻿
-namespace shopping_cart
+namespace shopping_cart.Models
 {
 	public class Product
 	{

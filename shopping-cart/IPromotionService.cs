@@ -6,6 +6,6 @@ namespace shopping_cart
 {
 	public interface IPromotionService
 	{
-		Task<List<Promotion>> GetPromotions(Dictionary<Product, int> products, string coupon = null);
+		Task<Dictionary<Promotion, int>> GetPromotions(Dictionary<Product, int> products, string coupon = null);
 	}
 }

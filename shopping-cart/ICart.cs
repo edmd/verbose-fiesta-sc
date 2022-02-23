@@ -1,5 +1,7 @@
-﻿using System;
+﻿using shopping_cart.Models;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace shopping_cart
 {
@@ -7,10 +9,10 @@ namespace shopping_cart
 	{
 		Guid Id { get; set; }
 		Dictionary<Product, int> Items { get; set; }
+		Dictionary<Promotion, int> Promotions { get; set; }
 		decimal Total { get; }
-
 		bool AddItem(Product product, int quantity);
-		void CalculateTotal(IPromotionService service);
+		Task CalculateTotal();
 		bool RemoveItem(Product product);
 	}
 }

@@ -1,41 +1,50 @@
-﻿using System;
+﻿using shopping_cart.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace shopping_cart
 {
 	public class Cart : ICart
 	{
+		private IPromotionService _promotionService;
 		public Guid Id { get; set; }
+		public Dictionary<Product, int> Items { get; set; }
+		public Dictionary<Promotion, int> Promotions { get; set; }
 
-		public Decimal Total
+		public Cart(IPromotionService promotionService)
+		{
+			_promotionService = promotionService;
+			Items = new Dictionary<Product, int>();
+			Promotions = new Dictionary<Promotion, int>();
+		}
+
+		public decimal Total
 		{
 			get
 			{
-				return Items.Sum(x => x.Key.Price * x.Value);
+				this.CalculateTotal().Wait(); // https://stackoverflow.com/a/13735418/384311
+				return Items.Sum(x => x.Key.Price * x.Value) - Promotions.Sum(x => x.Key.Amount * x.Value);
 			}
 		}
-
-		public Dictionary<Product, int> Items { get; set; }
-		public Cart() { }
 
 		public bool AddItem(Product product, int quantity)
 		{
 			// We could add an initial check if there is sufficient stock before adding to the cart
-			var item = Items.First(x => x.Key.Id == product.Id);
+			//		return false;
+			var item = Items.FirstOrDefault(x => x.Key.Id == product.Id);
 			if (!item.Equals(default(KeyValuePair<Product, int>)))
 			{
 				Items.Remove(item.Key);
 				Items.Add(product, item.Value + quantity);
-				return true;
 			}
 			else
 			{
 				Items.Add(product, quantity);
 			}
 
-
-			return false;
+			return true;
 		}
 
 		public bool RemoveItem(Product product)
@@ -44,17 +53,15 @@ namespace shopping_cart
 		}
 
 		// A series of events need to be triggered as the Cart moves through the checkout flow:
-		// 1. Fetch delivery options
-		// 2. Fetch payment options
-		// 3. Calculate Total
-		// 4. Process payment
-		// 5. Order fulfillment
-		// 6. Stock update
-
-		public void CalculateTotal(IPromotionService service) // Move service reference to constructor
+		// - Fetch delivery options
+		// - Fetch payment options
+		// - Calculate Total
+		// - Process payment
+		// - Order fulfillment
+		// - Stock levels update
+		public async Task CalculateTotal()
 		{
-			var promotions = service.GetPromotions(Items);
-			// Calculate Product totals less promotion totals
+			Promotions = await _promotionService.GetPromotions(Items);
 		}
 	}
 }

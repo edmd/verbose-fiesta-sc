@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using shopping_cart.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace shopping_cart.Data
 {
 	public class ProductRepository : IProductRepository
 	{
+		// Data store / Api service goes here
 		public async Task<List<Product>> GetProducts()
 		{
 			return new List<Product>()
