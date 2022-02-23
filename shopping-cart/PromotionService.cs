@@ -7,14 +7,16 @@ namespace shopping_cart
 {
 	public class PromotionService : IPromotionService
 	{
-		// We need a Promotion object
+		// We need classes for Promotion and RuleAttributes
 		// The PromotionService will return a list of the promotions line items the cart is entitled to
 		public async Task<Dictionary<Promotion, int>> GetPromotions(Dictionary<Product, int> products, string coupon = null)
 		{
 			// The promotion engine should be dynamic
-			// The promotion rules should be retrieved from a repo
+			// The promotion rules should be retrieved from a repo (Db, Api, External)
+			// The promotion rules should be cached
 			// The promotion rules should be order aware
-			//	 i.e. rule order should be applied in a prioritised order
+			//	 i.e. rule order should be applied in desc order of priority
+			//		  the application of coupons should be applied idempotently
 			// The promotion engine should be wrapped in a microservice
 			// The promotion engine should be genericised RuleAttributes
 			var promotions = new Dictionary<Promotion, int>();

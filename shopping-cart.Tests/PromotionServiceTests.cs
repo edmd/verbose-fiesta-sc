@@ -50,5 +50,33 @@ namespace shopping_cart.Tests
 			// Assert
 			promotions.Sum(x => x.Value).Should().Be(totalPromotions);
 		}
+
+		[Theory]
+		[InlineData(new int[] { (int)ProductEnum.Butter, (int)ProductEnum.Butter, (int)ProductEnum.Bread }, 1)]
+		public async Task Valid_promotion_returned(int[] products, int totalPromotions)
+		{
+			// Arrange
+			var cartProducts = new Dictionary<Product, int>();
+			foreach (var product in products)
+			{
+				var item = cartProducts.FirstOrDefault(x => x.Key.Id == product);
+				if (!item.Equals(default(KeyValuePair<Product, int>)))
+				{
+					cartProducts.Remove(item.Key);
+					cartProducts.Add(new Product { Id = product, Name = ((ProductEnum)product).ToString() }, item.Value + 1);
+				}
+				else
+				{
+					cartProducts.Add(new Product { Id = product, Name = ((ProductEnum)product).ToString() }, 1);
+				}
+			}
+
+			// Act
+			var promotions = await _sut.GetPromotions(cartProducts);
+
+			// Assert
+			promotions.Sum(x => x.Value).Should().Be(totalPromotions);
+			promotions.FirstOrDefault().Key.Description.Should().Be("Half off Bread");
+		}
 	}
 }
