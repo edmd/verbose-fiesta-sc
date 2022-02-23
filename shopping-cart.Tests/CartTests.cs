@@ -14,7 +14,7 @@ namespace shopping_cart.Tests
 	{
 		protected ICart _sut;
 		//protected Mock<IPromotionService> _promotionServiceMock; // Technically this should be fully mocked
-		protected Mock<IProductRepository> _productRepositoryMock;
+		protected Mock<IProductRepository> _productRepositoryMock; // Refer to this reference for examples of Mock
 		protected IProductRepository _productRepository;
 		protected IPromotionService _promotionService;
 

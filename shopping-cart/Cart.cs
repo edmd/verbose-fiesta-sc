@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace shopping_cart
 {
+	// The user may or may not be authenticated, i.e. User ref would be optional,
+	//		the cart would be cookie persisted until the user is authenticated
 	public class Cart : ICart
 	{
 		private IPromotionService _promotionService;
 		public Guid Id { get; set; }
+		//public User user { get; set; }
 		public Dictionary<Product, int> Items { get; set; }
 		public Dictionary<Promotion, int> Promotions { get; set; }
 
@@ -57,7 +60,7 @@ namespace shopping_cart
 		// - Fetch payment options
 		// - Calculate Total
 		// - Process payment
-		// - Order fulfillment
+		// - Order creation, messages sent on bus topics (e.g. emails)
 		// - Stock levels update
 		public async Task CalculateTotal()
 		{
